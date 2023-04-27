@@ -2,18 +2,17 @@ class Prompt:
     def __init__(self, choice, content):
         self.choice = choice
         self.content = content
-        return 
 
     def __checkInformationPromtMessage(self):
         return [{"role": "system", "content": "You are a information checker that checks whether the information is correct. Check the correctness of the information using the translated content into English. Return true if the information is correct, Return false and correct content if the information is incorrect."},
                 {"role": "user", "content": self.content}]
 
     def __summarizeContentPromtMessage(self):
-        return [{"role": "system", "content": "You are a helpful assistant summarizing the content."},
+        return [{"role": "system", "content": "You are a helpful assistant that summarizes the content in the language of the user's content in the shortest way without losing its meaning."},
                 {"role": "user", "content": self.content}]
 
     def __explainCodePromtMessage(self):
-        return [{"role": "system", "content": "You are a helpful assistant explaining the code."},
+        return [{"role": "system", "content": "You are a helpful assistant that explains the code in the shortest way possible."},
                 {"role": "user", "content": self.content}]
 
     def __fixTyposPromtMessage(self):

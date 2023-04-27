@@ -1,20 +1,14 @@
-import os
-from prompt import Prompt
-import openai
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask
+from flask_restx import Api
+from app.main.controller.textOperation import Generate
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
+api = Api(app, version='1.0', title='GPTXE API',
+    description='A simple GPTXE API',
+)
 
-@app.route("/api/generate", methods=("GET", "POST"))
-def index():
-    if request.method == "POST":
-        data = request.json
-        selectedText = data["selectedText"]
-        operationChoice = data["operationChoice"]
-        response = openai.ChatCompletion.create(**Prompt(operationChoice, selectedText).getPrompt())
-        print("sa")
-        print(response)
-        print("as")
-        return jsonify({"result": response.choices[0].message.content})
+api.add_resource(Generate,"/api/generate/<string:selectedText>&<string:operationChoice>")
+  
+if __name__ == "__main__":
+    app.run(debug=True)
