@@ -1,4 +1,5 @@
 from app.main.utils.prompt import Prompt
+from flask import request
 import openai
 import os
 
@@ -20,5 +21,5 @@ class TextOperationService:
     
     def getExplainCode(self, content):
         self.prompt.setContent(content)
-        response = self.chatCompletion.create(**self.prompt.getFixTyposPromt())
+        response = self.chatCompletion.create(**self.prompt.getExplainCodePromt())
         return response.choices[0].message.content

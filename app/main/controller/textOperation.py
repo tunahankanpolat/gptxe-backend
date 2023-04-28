@@ -5,17 +5,20 @@ from app.main.service.textOperationService import TextOperationService
 textOperationService = TextOperationService()
 
 class summarizeContent(Resource):
-    def get(self,content):
-        if request.method == "GET":
+    def post(self):
+        if request.method == "POST":
+            content = request.json
             return jsonify({"result": textOperationService.getSummarizeContent(content)})
 
 class fixTypos(Resource):
-    def get(self,content):
-        if request.method == "GET":
+    def post(self):
+        if request.method == "POST":
+            content = request.json
             return jsonify({"result": textOperationService.getFixTypos(content)})
 
 class explainCode(Resource):
-    def get(self,content):
-        if request.method == "GET":
+    def post(self):
+        if request.method == "POST":
+            content = request.json
             return jsonify({"result": textOperationService.getExplainCode(content)})
    

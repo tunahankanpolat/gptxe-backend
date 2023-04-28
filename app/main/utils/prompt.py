@@ -11,7 +11,7 @@ class Prompt:
                 {"role": "user", "content": self.content}]
 
     def __explainCodePromtMessage(self):
-        return [{"role": "system", "content": "You are a helpful assistant that explains the code in the shortest way possible."},
+        return [{"role": "system", "content": "You are a helpful assistant that explains the code in the shortest way."},
                 {"role": "user", "content": self.content}]
 
     def __fixTyposPromtMessage(self):

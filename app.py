@@ -8,9 +8,9 @@ api = Api(app, version='1.0', title='GPTXE API',
     description='A simple GPTXE API',
 )
 
-api.add_resource(summarizeContent,"/api/summarizeContent/<string:content>")
-api.add_resource(explainCode,"/api/explainCode/<string:content>")
-api.add_resource(fixTypos,"/api/fixTypos/<string:content>")
+api.add_resource(summarizeContent,"/api/summarizeContent")
+api.add_resource(explainCode,"/api/explainCode")
+api.add_resource(fixTypos,"/api/fixTypos")
 
 if __name__ == "__main__":
     app.run(debug=True)
