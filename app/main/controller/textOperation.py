@@ -1,14 +1,21 @@
 from flask_restx import Resource
 from flask import request, jsonify
-from app.main.model.prompt import Prompt
-import openai
-import os
+from app.main.service.textOperationService import TextOperationService
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+textOperationService = TextOperationService()
 
-class Generate(Resource):
-    def get(self,selectedText,operationChoice):
+class summarizeContent(Resource):
+    def get(self,content):
         if request.method == "GET":
-            response = openai.ChatCompletion.create(**Prompt(operationChoice, selectedText).getPrompt())
-            return jsonify({"result": response.choices[0].message.content})
+            return jsonify({"result": textOperationService.getSummarizeContent(content)})
+
+class fixTypos(Resource):
+    def get(self,content):
+        if request.method == "GET":
+            return jsonify({"result": textOperationService.getFixTypos(content)})
+
+class explainCode(Resource):
+    def get(self,content):
+        if request.method == "GET":
+            return jsonify({"result": textOperationService.getExplainCode(content)})
    
