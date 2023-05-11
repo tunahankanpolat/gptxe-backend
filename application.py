@@ -2,16 +2,19 @@ from flask import Flask
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
+load_dotenv("application.env")
 
 app = Flask(__name__)
-
-api = Api(app, version='1.0', title='GPTXE API',
-    description='A simple GPTXE API',
+api = Api(app, version=os.getenv("VERSION"), title=os.getenv("TITLE"),
+    description=os.getenv("DESCRIPTION"),
 )
-client = MongoClient("mongodb://localhost:27017")
-db = client["gptxe"] 
+client = MongoClient(os.getenv("MONGODB_DATASOURCE_URL"))
+db = client[os.getenv("MONGODB_DATASOURCE_DATABASE")] 
 
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")  # Change this!
 
 if __name__ == "__main__":
     from app.main.controller.textOperation import *
