@@ -25,4 +25,4 @@ class User:
         return self.languagePreference
     
     def toString(self):
-        return {"email":self.email, "password": self.password, "apiKey":self.apiKey, "subscription":self.subscription, "languagePreference":self.languagePreference}
+        return {"email":self.email, "password": self.password, "api_key":self.apiKey, "subscription":self.subscription, "language_preference":self.languagePreference}
