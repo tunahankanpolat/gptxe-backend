@@ -1,5 +1,4 @@
 from app.main.utils.prompt import Prompt
-from flask import request
 import openai
 import os
 
