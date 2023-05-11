@@ -36,7 +36,7 @@
 8. Run the app:
 
    ```bash
-   $ flask run
+   $ python app.py
    ```
 
 You should now be able to access the app at [http://localhost:5000](http://localhost:5000)
