@@ -11,7 +11,7 @@ class UserService:
             
             user = User(email,generate_password_hash(password))
             userDao.addUser(user)
-            accessToken = create_access_token(identity=email)
+            accessToken = create_access_token(identity=email, expires_delta=False)
             return {"access_token": accessToken}, 200
         else:
             return {"error": "Email and password fields are required."}, 400
@@ -20,7 +20,7 @@ class UserService:
         if email and password:
             user = userDao.getByEmail(email)
             if user and check_password_hash(user["password"], password):
-                accessToken = create_access_token(identity=email)
+                accessToken = create_access_token(identity=email, expires_delta=False)
                 return {"access_token": accessToken}, 200
             else:
                 return {"error": "Email or password is incorrect."}, 401
@@ -45,4 +45,3 @@ class UserService:
             return {"message": "User updated."}, 200
         else:
             return {"error": "User not found."}, 404
-    
