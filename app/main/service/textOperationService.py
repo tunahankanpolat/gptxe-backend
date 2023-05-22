@@ -22,7 +22,7 @@ class TextOperationService:
         if not content:
             return {"error": "Content is empty."}, 400
         elif(query):
-            return query["result"],200
+            return {"result": query["result"]},200
         elif(tokenCount <= self.maxToken):
             try:
                 self.prompt.setContent(content)
@@ -42,7 +42,7 @@ class TextOperationService:
         if not content:
             return {"error": "Content is empty."}, 400
         elif(query):
-            return query["result"],200
+            return {"result": query["result"]},200
         elif(tokenCount <= self.maxToken):
             try:
                 self.prompt.setContent(content)
@@ -63,7 +63,7 @@ class TextOperationService:
         if not content:
             return {"error": "Content is empty."}, 400
         elif(query):
-            return query["result"],200
+            return {"result": query["result"]},200
         elif(tokenCount <= self.maxToken):
             try:
                 self.prompt.setContent(content)

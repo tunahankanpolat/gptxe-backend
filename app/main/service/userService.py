@@ -41,7 +41,10 @@ class UserService:
             updatedUserData["password"] = generate_password_hash(updatedUserData["password"])
         if user:
             userDao.updateUser(user["_id"], user, updatedUserData)
-            
-            return {"message": "User updated."}, 200
+            if("email" in updatedUserData):
+                accessToken = create_access_token(identity=updatedUserData["email"], expires_delta=False)
+                return {"access_token": accessToken,"message": "User updated."}, 200
+            else:
+                return {"message": "User updated."}, 200
         else:
             return {"error": "User not found."}, 404
