@@ -12,18 +12,18 @@ def token_required(f):
         if not token:
             return {
                 "error": "Please login to your account.",
-            }, 401
+            }, 403
         try:
             email=decode_token(token)["sub"]
             user=userDao.getByEmail(email)
             if user is None:
                 return {
                 "error": "Invalid Authentication token!",
-            }, 401
+            }, 403
         except Exception as e:
             return {
-                "error": "Something went wrong",
-            }, 500
+                "error": "Invalid Authentication token!",
+            }, 403
         kwargs = user
         return f(*args, **kwargs)
 
