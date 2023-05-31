@@ -9,45 +9,48 @@ api = Namespace("api")
 class summarizeContentResource(Resource):
     @token_required
     def post(self, *args, **kwargs):
+        email = ""
         if request.method == "POST":
             try:
+                email = kwargs["email"]
                 json = request.json
                 textOperationService = TextOperationService(kwargs)
                 result = textOperationService.getSummarizeContent(json["content"])
-                retDict = result[0].copy()
-                retDict["email"] = kwargs["email"]
-                retTupple = (retDict, result[1])
-                return retTupple
+                return addEmail(result, email)
             except:
-                return {"error": "Missing content value in body"}, 400
+                return {"error": "Missing content value in body", "email":email}, 400
 @api.route("/fixTypos")
 class fixTyposResource(Resource):
     @token_required
     def post(self, *args, **kwargs):
         if request.method == "POST":
+            email = ""
             try:
+                email = kwargs["email"]
                 json = request.json
                 textOperationService = TextOperationService(kwargs)
                 result = textOperationService.getFixTypos(json["content"])
-                retDict = result[0].copy()
-                retDict["email"] = kwargs["email"]
-                retTupple = (retDict, result[1])
-                return retTupple
+                return addEmail(result, email)
             except:
-                return {"error": "Missing content value in body"}, 400
+                return {"error": "Missing content value in body", "email":email}, 400
 
 @api.route("/explainCode")
 class explainCodeResource(Resource):
     @token_required
     def post(self, *args, **kwargs):
         if request.method == "POST":
+            email = ""
             try:
+                email = kwargs["email"]
                 json = request.get_json()
                 textOperationService = TextOperationService(kwargs)
                 result = textOperationService.getExplainCode(json["content"])
-                retDict = result[0].copy()
-                retDict["email"] = kwargs["email"]
-                retTupple = (retDict, result[1])
-                return retTupple
+                return addEmail(result, email)
             except:
-                return {"error": "Missing content value in body"}, 400
+                return {"error": "Missing content value in body", "email":email}, 400
+            
+def addEmail(result, email):
+    retDict = result[0].copy()
+    retDict["email"] = email
+    retTupple = (retDict, result[1])
+    return retTupple

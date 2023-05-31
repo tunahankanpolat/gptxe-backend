@@ -6,3 +6,9 @@ class Query:
 
     def toString(self):
         return {"operation": self.operation, "content": self.content, "result": self.result}
+    
+    def key(self):
+        return "operation: " + self.operation + ", content: " + self.content
+    
+    def value(self):
+        return self.result

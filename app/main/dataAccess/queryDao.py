@@ -1,10 +1,21 @@
-from app import db
+from app import r
+import hashlib
+
+def addQuery(query):
+    sha256 = hashlib.sha256()
+    sha256.update(query.key().encode('utf-8'))
+
+    hashedQuery = sha256.hexdigest()
+    r.set(hashedQuery, query.value())
 
 def getByRequest(operation, request):
-    queries = db.queries
-    return queries.find_one({"content": request, "operation": operation})
+    sha256 = hashlib.sha256()
+    key = "operation: " + operation + ", content: " + request
+    sha256.update(key.encode('utf-8'))
 
-def addQuery(qery):
-    queries = db.queries
-    return queries.insert_one(qery.toString()).inserted_id
-
+    hashedQuery = sha256.hexdigest()
+    value = r.get(hashedQuery)
+    if(value):
+        return value.decode('utf-8')
+    else:
+        return value
