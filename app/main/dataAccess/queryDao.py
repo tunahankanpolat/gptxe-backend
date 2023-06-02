@@ -1,5 +1,6 @@
-from app import r
 import hashlib
+from . import r
+
 
 def addQuery(query):
     sha256 = hashlib.sha256()

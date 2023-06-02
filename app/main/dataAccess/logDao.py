@@ -1,4 +1,4 @@
-from app import db
+from . import db
 
 def addLog(log):
     logs = db.logs

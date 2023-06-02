@@ -1,7 +1,7 @@
 from functools import wraps
 from flask_jwt_extended import decode_token
 from flask import request
-from app.main.dataAccess import userDao
+from app.main.dataAccess.userDao import getByEmail
 
 def token_required(f):
     @wraps(f)
@@ -15,7 +15,7 @@ def token_required(f):
             }, 403
         try:
             email=decode_token(token)["sub"]
-            user=userDao.getByEmail(email)
+            user=getByEmail(email)
             if user is None:
                 return {
                 "error": "Invalid Authentication token!",

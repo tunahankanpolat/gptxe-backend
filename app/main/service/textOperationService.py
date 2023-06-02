@@ -1,16 +1,16 @@
 from app.main.utils.prompt import Prompt
 from app.main.dataAccess.queryDao import addQuery, getByRequest
 from app.main.model.query import Query
+from flask import current_app as app
 import openai
 import tiktoken
-import os
 
 class TextOperationService:
     def __init__(self, user):
         openai.api_key = user["api_key"]
         self.prompt = Prompt(user["language_preference"])
         self.chatCompletion = openai.ChatCompletion()
-        self.maxToken = int(os.getenv("MAX_TOKEN"))
+        self.maxToken = int(app.config["MAX_TOKEN"])
         try:
             self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
         except KeyError:

@@ -1,4 +1,4 @@
-from app import db
+from . import db
 
 def getByEmail(email):
     users = db.users
