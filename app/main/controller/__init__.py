@@ -10,3 +10,10 @@ def initApi(app):
 
     api.add_namespace(textOperationApi)
     api.add_namespace(userControllerApi)
+
+
+def addEmailForLogger(result, email):
+    retDict = result[0].copy()
+    retDict["email"] = email
+    retTupple = (retDict, result[1])
+    return retTupple
