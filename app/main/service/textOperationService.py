@@ -7,10 +7,10 @@ import tiktoken
 
 class TextOperationService:
     def __init__(self, user):
-        openai.api_key = user["api_key"]
-        self.prompt = Prompt(user["language_preference"])
+        openai.api_key = user.get("api_key")
+        self.prompt = Prompt(user.get("language_preference"))
         self.chatCompletion = openai.ChatCompletion()
-        self.maxToken = int(app.config["MAX_TOKEN"])
+        self.maxToken = int(app.config.get("MAX_TOKEN"))
         try:
             self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
         except KeyError:
@@ -32,7 +32,7 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
@@ -52,7 +52,7 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
@@ -73,6 +73,6 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
