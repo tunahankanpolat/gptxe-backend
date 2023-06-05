@@ -19,4 +19,6 @@ class DevelopmentConfig(Config):
     LOG_FORMAT='%(asctime)s - %(levelname)s - [%(request_method)s %(endpoint)s] - [%(response_status)s] - [User: %(email)s] - %(message)s'
     DEBUG = True
 class TestingConfig(Config):
+    LOG_LEVEL="INFO"
+    LOG_FORMAT='%(asctime)s - %(levelname)s - [%(request_method)s %(endpoint)s] - [%(response_status)s] - [User: %(email)s] - %(message)s'
     TESTING = True
