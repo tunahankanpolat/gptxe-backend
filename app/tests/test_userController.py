@@ -1,3 +1,5 @@
+from app.tests import get_access_token
+
 def test_logIn(client):
     response = client.post("/api/logIn", json={
         "email": "tuna@gmail.com",
@@ -87,6 +89,3 @@ def test_updateLanguagePreference(client):
     })
     assert response.status_code == 200
     assert response.json.get("message") == "User updated."
-
-def get_access_token():
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NTk2NTEyNSwianRpIjoiODRlNmUzYzUtNmE5MS00ZWY3LTk0YWQtYjQxOTE5MTA1ZDEyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InR1bmFAZ21haWwuY29tIiwibmJmIjoxNjg1OTY1MTI1fQ.rbKTE_opODx4VRJGe949mJf5BFYtVQk_q2EXVme1aV8"
