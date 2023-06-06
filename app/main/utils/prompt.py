@@ -1,9 +1,6 @@
 class Prompt:
-    def __init__(self, languagePreference):
-        if(languagePreference):
-            self.languagePreference = languagePreference
-        else:
-            self.languagePreference = "English"
+    def __init__(self, languagePreference="English"):
+        self.languagePreference = languagePreference
 
     def setContent(self, content):
         self.content = content
@@ -13,7 +10,7 @@ class Prompt:
                 {"role": "user", "content": self.content}]
 
     def __explainCodePromtMessage(self):
-        return [{"role": "system", "content": "You are a helpful assistant who briefly explains the code in " + self.languagePreference + "."},
+        return [{"role": "system", "content": "You are a helpful assistant who briefly explains the code in " + str(self.languagePreference) + "."},
                 {"role": "user", "content": self.content}]
 
     def __fixTyposPromtMessage(self):

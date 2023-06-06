@@ -1,13 +1,4 @@
 class Log:
-    def __init__(self, level, timeStamp, fileName, lineNo, requestMethod, endpoint, responseStatus, email, msg):
-        self.level = level
-        self.timeStamp = timeStamp
-        self.requestMethod = requestMethod
-        self.endpoint = endpoint
-        self.responseStatus = responseStatus
-        self.email = email
-        self.msg = msg
-
     def __init__(self, log):
         self.level = log.get("level")
         self.timeStamp = log.get("timestamp")
