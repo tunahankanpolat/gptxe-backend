@@ -1,22 +1,22 @@
 from app.main.utils.prompt import Prompt
 from app.main.dataAccess.queryDao import addQuery, getByRequest
 from app.main.model.query import Query
-from flask import current_app as app
+from config import Config
 import openai
 import tiktoken
 
 class TextOperationService:
-    def __init__(self, user):
-        openai.api_key = user["api_key"]
-        self.prompt = Prompt(user["language_preference"])
+    def __init__(self):
+        self.prompt = Prompt()
         self.chatCompletion = openai.ChatCompletion()
-        self.maxToken = int(app.config["MAX_TOKEN"])
+        self.maxToken = int(Config.MAX_TOKEN)
         try:
             self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
         except KeyError:
             self.encoding = tiktoken.get_encoding("cl100k_base")
 
-    def getSummarizeContent(self, content):
+    def getSummarizeContent(self, content, user):
+        openai.api_key = user.get("api_key")
         query = getByRequest("summarize_content",content)
         tokenCount = len(self.encoding.encode(content))
         if not content:
@@ -25,8 +25,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                self.prompt.setContent(content)
-                response = self.chatCompletion.create(**self.prompt.getSummarizeContentPromt())
+                response = self.chatCompletion.create(**self.prompt.getSummarizeContentPromt(content))
                 result = response.choices[0].message.content
                 newQuery = Query("summarize_content", content, result)
                 addQuery(newQuery)
@@ -36,7 +35,8 @@ class TextOperationService:
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
-    def getFixTypos(self, content):
+    def getFixTypos(self, content, user):
+        openai.api_key = user.get("api_key")
         query = getByRequest("fix_typos", content)
         tokenCount = len(self.encoding.encode(content))
         if not content:
@@ -45,8 +45,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                self.prompt.setContent(content)
-                response = self.chatCompletion.create(**self.prompt.getFixTyposPromt())
+                response = self.chatCompletion.create(**self.prompt.getFixTyposPromt(content))
                 result = response.choices[0].message.content
                 newQuery = Query("fix_typos", content, result)
                 addQuery(newQuery)
@@ -57,7 +56,8 @@ class TextOperationService:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
     
-    def getExplainCode(self, content):
+    def getExplainCode(self, content, user):
+        openai.api_key = user.get("api_key")
         query = getByRequest("explain_code", content)
         tokenCount = len(self.encoding.encode(content))
         if not content:
@@ -66,8 +66,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                self.prompt.setContent(content)
-                response = self.chatCompletion.create(**self.prompt.getExplainCodePromt())
+                response = self.chatCompletion.create(**self.prompt.getExplainCodePromt(content, user.get("language_preference")))
                 result = response.choices[0].message.content
                 newQuery = Query("explain_code", content, result)
                 addQuery(newQuery)
