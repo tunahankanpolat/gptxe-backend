@@ -13,23 +13,31 @@ def createApp(name = "gptxe"):
 
     JWTManager(app)
 
-    initApi(app)
-    initLogger(app)
+    initApi(app, version=app.config["VERSION"], title=app.config["TITLE"], description=app.config["DESCRIPTION"])
+    initLogger(app, app.config["LOG_FORMAT"])
     return app
 
 
-def initLogger(app):
+def initLogger(app, logLevel = "INFO"):
     app.logger.removeHandler(default_handler)
-
-    mongoHandler = MongoDBHandler()
-    streamHandler = logging.StreamHandler()
-    formatter = logging.Formatter(app.config["LOG_FORMAT"])
-    mongoHandler.setFormatter(formatter)
-    streamHandler.setFormatter(formatter)
-    mongoHandler.setLevel(app.config["LOG_LEVEL"])
-    streamHandler.setLevel(app.config["LOG_LEVEL"])
     
-    app.logger.addHandler(mongoHandler)
-    app.logger.addHandler(streamHandler)
+    formatter = logging.Formatter(logLevel)
+
+    app.logger.addHandler(initMongoDBHandler(formatter, app))
+    app.logger.addHandler(initConsoleHandler(formatter, app))
+
     from app.main.utils.logger import createLoggerMessages
     createLoggerMessages(app)
+
+def initMongoDBHandler(formatter, app):
+    mongoHandler = MongoDBHandler()
+    mongoHandler.setFormatter(formatter)
+    mongoHandler.setLevel(app.config["LOG_LEVEL"])
+    return mongoHandler
+
+
+def initConsoleHandler(formatter, app):
+    streamHandler = logging.StreamHandler()
+    streamHandler.setFormatter(formatter)
+    streamHandler.setLevel(app.config["LOG_LEVEL"])
+    return streamHandler
