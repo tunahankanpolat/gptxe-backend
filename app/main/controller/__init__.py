@@ -1,8 +1,8 @@
 def initApi(app):
     from flask_restx import Api
 
-    api = Api(app, version=app.config["VERSION"], title=app.config["TITLE"],
-        description=app.config["DESCRIPTION"],
+    api = Api(app, version=app.config.get("VERSION"), title=app.config.get("TITLE"),
+        description=app.config.get("DESCRIPTION"),
     )
 
     from .textOperation import api as textOperationApi

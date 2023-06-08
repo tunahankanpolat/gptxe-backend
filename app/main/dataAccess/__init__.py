@@ -13,13 +13,13 @@ def initCache(host = "localhost", port = 6379, db = 0):
 def getDB():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = initDB(app.config["DATASOURCE_URI"], app.config["DATASOURCE_DATABASE"])
+        db = g._database = initDB(app.config.get("DATASOURCE_URI"), app.config.get("DATASOURCE_DATABASE"))
     return db
 
 def getCache():
     r = getattr(g, '_cache', None)
     if r is None:
-        r = g._cache = initCache(app.config["REDIS_HOST"], app.config["REDIS_PORT"], app.config["REDIS_DB"])
+        r = g._cache = initCache(app.config.get("REDIS_HOST"), app.config.get("REDIS_PORT"), app.config.get("REDIS_DB"))
     return r
 
 db = LocalProxy(getDB)

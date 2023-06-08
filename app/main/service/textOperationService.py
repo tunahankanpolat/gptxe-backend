@@ -31,7 +31,7 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
@@ -51,7 +51,7 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
@@ -72,6 +72,6 @@ class TextOperationService:
                 addQuery(newQuery)
                 return {"result": result, "message": "Successfully sent a request to the OpenAI Api"}, 200
             except openai.error.OpenAIError as error:
-                return {"error": str(error.json_body["error"]["code"])}, error.http_status
+                return {"error": str(error.json_body.get("error").get("code"))}, error.http_status
         else:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
