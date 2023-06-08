@@ -9,13 +9,13 @@ class Log:
         self.msg = msg
 
     def __init__(self, log):
-        self.level = log["level"]
-        self.timeStamp = log["timestamp"]
-        self.requestMethod = log["request_method"]
-        self.endpoint = log["endpoint"]
-        self.responseStatus = log["response_status"]
-        self.email = log["email"]
-        self.msg = log["msg"]
+        self.level = log.get("level")
+        self.timeStamp = log.get("timestamp")
+        self.requestMethod = log.get("request_method")
+        self.endpoint = log.get("endpoint")
+        self.responseStatus = log.get("response_status")
+        self.email = log.get("email")
+        self.msg = log.get("msg")
         
     def toString(self):
         return {
