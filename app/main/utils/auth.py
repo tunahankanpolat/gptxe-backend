@@ -8,13 +8,13 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
         if "Authorization" in request.headers:
-            token = request.headers["Authorization"]
+            token = request.headers.get("Authorization")
         if not token:
             return {
                 "error": "Please login to your account.",
             }, 403
         try:
-            email=decode_token(token)["sub"]
+            email=decode_token(token).get("sub")
             user=getByEmail(email)
             if user is None:
                 return {
