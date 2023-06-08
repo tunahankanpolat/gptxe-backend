@@ -12,37 +12,28 @@ class UserService:
             user = User(email,generate_password_hash(password))
             userDao.addUser(user)
             accessToken = create_access_token(identity=email, expires_delta=False)
-            return {"access_token": accessToken}, 200
+            return {"access_token": accessToken, "message": "Successfully registered"}, 200
         else:
             return {"error": "Email and password fields are required."}, 400
     
     def logIn(self, email, password):
         if email and password:
             user = userDao.getByEmail(email)
-            if user and check_password_hash(user["password"], password):
+            if user and check_password_hash(user.get("password"), password):
                 accessToken = create_access_token(identity=email, expires_delta=False)
-                return {"access_token": accessToken}, 200
+                return {"access_token": accessToken, "message": "Successfully logged in"}, 200
             else:
                 return {"error": "Email or password is incorrect."}, 401
         else:
             return {"error": "Email and password fields are required."}, 400
-        
-    def upgradeSubscription(self, user):
-        if user:
-            user["subscription"] = True
-            userDao.updateUser(user["_id"], user)
-            
-            return {"message": "Subscription upgraded."}, 200
-        else:
-            return {"error": "User not found."}, 404
 
     def updateUser(self, user, updatedUserData):
         if("password" in updatedUserData):
-            updatedUserData["password"] = generate_password_hash(updatedUserData["password"])
+            updatedUserData["password"] = generate_password_hash(updatedUserData.get("password"))
         if user:
-            userDao.updateUser(user["_id"], user, updatedUserData)
+            userDao.updateUser(user.get("_id"), user, updatedUserData)
             if("email" in updatedUserData):
-                accessToken = create_access_token(identity=updatedUserData["email"], expires_delta=False)
+                accessToken = create_access_token(identity=updatedUserData.get("email"), expires_delta=False)
                 return {"access_token": accessToken,"message": "User updated."}, 200
             else:
                 return {"message": "User updated."}, 200
