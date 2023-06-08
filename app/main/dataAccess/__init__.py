@@ -1,26 +1,27 @@
 from pymongo import MongoClient
 from redis import Redis
 from werkzeug.local import LocalProxy
-from flask import current_app as app, g
+from flask import current_app as app
+from config import Config
 
 def initDB(url="mongodb://localhost:27017", database="gptxe"):
     client = MongoClient(url)
     return client[database] 
 
 def initCache(host = "localhost", port = 6379, db = 0):
-    return Redis(host, port, db)
+    return Redis(host, port, databaseInstance)
 
 def getDB():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = initDB(app.config.get("DATASOURCE_URI"), app.config.get("DATASOURCE_DATABASE"))
-    return db
+    databaseInstance = getattr(app, '_database', None)
+    if databaseInstance is None:
+        databaseInstance = app._database = initDB(Config.DATASOURCE_URI, Config.DATASOURCE_DATABASE)
+    return databaseInstance
 
 def getCache():
-    r = getattr(g, '_cache', None)
-    if r is None:
-        r = g._cache = initCache(app.config.get("REDIS_HOST"), app.config.get("REDIS_PORT"), app.config.get("REDIS_DB"))
-    return r
+    redisInstance = getattr(app, '_cache', None)
+    if redisInstance is None:
+        redisInstance = app._cache = initCache(Config.REDIS_HOST, Config.REDIS_PORT, Config.REDIS_DB)
+    return redisInstance
 
-db = LocalProxy(getDB)
-r = LocalProxy(getCache)
+databaseInstance = LocalProxy(getDB)
+redisInstance = LocalProxy(getCache)
