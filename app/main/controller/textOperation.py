@@ -5,6 +5,7 @@ from app.main.service.textOperationService import TextOperationService
 from app.main.controller import addEmailForLogger
 
 api = Namespace("api")
+textOperationService = TextOperationService()
 
 @api.route("/summarizeContent")
 class summarizeContentResource(Resource):
@@ -12,8 +13,7 @@ class summarizeContentResource(Resource):
     def post(self, *args, **kwargs):
         email = kwargs.get("email")
         json = request.get_json()
-        textOperationService = TextOperationService(kwargs)
-        result = textOperationService.getSummarizeContent(json.get("content"))
+        result = textOperationService.getSummarizeContent(json.get("content"), kwargs)
         return addEmailForLogger(result, email)
 @api.route("/fixTypos")
 class fixTyposResource(Resource):
@@ -21,8 +21,7 @@ class fixTyposResource(Resource):
     def post(self, *args, **kwargs):
         email = kwargs.get("email")
         json = request.get_json()
-        textOperationService = TextOperationService(kwargs)
-        result = textOperationService.getFixTypos(json.get("content"))
+        result = textOperationService.getFixTypos(json.get("content"), kwargs)
         return addEmailForLogger(result, email)
 
 @api.route("/explainCode")
@@ -31,6 +30,5 @@ class explainCodeResource(Resource):
     def post(self, *args, **kwargs):
         email = kwargs.get("email")
         json = request.get_json()
-        textOperationService = TextOperationService(kwargs)
-        result = textOperationService.getExplainCode(json.get("content"))
+        result = textOperationService.getExplainCode(json.get("content"), kwargs)
         return addEmailForLogger(result, email)
