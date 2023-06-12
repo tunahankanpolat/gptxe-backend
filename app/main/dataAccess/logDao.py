@@ -1,5 +1,7 @@
-from . import databaseInstance
+class LogDao:
+    def __init__(self, databaseInstance):
+        self.databaseInstance = databaseInstance
 
-def addLog(log):
-    logs = databaseInstance.logs
-    return logs.insert_one(log.toString()).inserted_id
+    def addLog(self, log):
+        logs = self.databaseInstance.logs
+        return logs.insert_one(log.toString()).inserted_id

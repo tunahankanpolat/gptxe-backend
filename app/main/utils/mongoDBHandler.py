@@ -1,8 +1,11 @@
 import logging
 from app.main.model.log import Log
-from app.main.dataAccess.logDao import addLog
 
 class MongoDBHandler(logging.Handler):
+    def __init__(self, logDao):
+        logging.Handler.__init__(self)
+        self.logDao = logDao
+
     def emit(self, record):
         logEntry = {
             'level': record.levelname,
@@ -14,4 +17,4 @@ class MongoDBHandler(logging.Handler):
             'msg': record.msg
         }
         log = Log(logEntry)
-        addLog(log)
+        self.logDao.addLog(log)

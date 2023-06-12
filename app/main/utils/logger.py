@@ -48,3 +48,8 @@ def removeMessageForLogger(jsonData):
     if len(jsonData) > 1 and "message" in jsonData:
         del jsonData["message"]
     
+def addEmailForLogger(result, email):
+    retDict = result[0].copy()
+    retDict["email"] = email
+    retTupple = (retDict, result[1])
+    return retTupple

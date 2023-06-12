@@ -1,4 +1,7 @@
 class Prompt:
+    def __init__(self, encoding):
+        self.encoding = encoding
+
     def __summarizeContentPromtMessage(self, content):
         return [{"role": "system", "content": "You are a helpful assistant that summarizes the content in the language of the user's content in the shortest way without losing its meaning."},
                 {"role": "user", "content": content}]
@@ -31,3 +34,6 @@ class Prompt:
             "messages": self.__fixTyposPromtMessage(content),
             "temperature": 0
         }
+    
+    def getTokenCount(self, content):
+        return len(self.encoding.encode(content))
