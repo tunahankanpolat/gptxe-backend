@@ -21,25 +21,19 @@ jobs:
         python-version: "3.9.16"
     - name: Install dependencies
       run: |
-        pip install coverage
+        pip install pytest-cov
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Set environment variable
       run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
     - name: Run tests
       run: |
-        coverage run --source=. -m unittest discover > test_output.txt
-        coverage report > coverage_report.txt
-        coverage xml -o coverage.xml
-        echo "::set-output name=test_output::$(cat test_output.txt)"
-        echo "::set-output name=coverage_report::$(cat coverage_report.txt)"
-        echo "::set-output name=coverage::$(cat coverage.xml)"
+        pytest --cov > test_report.txt
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          ${{ steps.test.outputs.test_output }}
-          ${{ steps.test.outputs.coverage_report }}
+          $(test_report)
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
