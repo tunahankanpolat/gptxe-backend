@@ -30,11 +30,11 @@ jobs:
       id: run_test
       run: |
         pytest --cov > test_report.txt
-        echo "secret-number=$(cat test_report.txt)" >> "$GITHUB_OUTPUT"
+        echo "::set-output name=report::$(cat test_report.txt)"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: ${{ steps.run_tests.outputs.secret-number }}
+        slack-message: ${{ "::set-output name=report::$(cat test_report.txt)" }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
