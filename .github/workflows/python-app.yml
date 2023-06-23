@@ -26,27 +26,20 @@ jobs:
         pip install -r requirements.txt
     - name: Set environment variable
       run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
-    - name: Run tests and generate coverage report
+    - name: Run tests
       run: |
         coverage run --source=. -m unittest discover > test_output.txt
         coverage report > coverage_report.txt
         coverage xml -o coverage.xml
-    - name: Read test output file
-      id: read_test_output
-      run: echo "::set-output name=contents::$(cat test_output.txt)"
-    - name: Read coverage report file
-      id: read_coverage_report
-      run: echo "::set-output name=contents::$(cat coverage_report.txt)"
-    - name: Process coverage report
-      id: process_coverage_report
-      run: |
-        echo "${{ steps.read_coverage_report.outputs.contents }}" | grep -E 'Name|Stmts|Miss|Cover' > processed_coverage_report.txt
+        echo "::set-output name=test_output::$(cat test_output.txt)"
+        echo "::set-output name=coverage_report::$(cat coverage_report.txt)"
+        echo "::set-output name=coverage::$(cat coverage.xml)"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          ${{ steps.read_test_output.outputs.contents }}
-          $(cat processed_coverage_report.txt)
+          ${{ steps.test.outputs.test_output }}
+          ${{ steps.test.outputs.coverage_report }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
