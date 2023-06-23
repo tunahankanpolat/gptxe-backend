@@ -22,11 +22,11 @@ jobs:
         python-version: "3.9.16"
     - name: Install dependencies
       run: |
+        pip install coverage
         python -m venv venv
         . venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install coverage
     - name: Set environment variable
       run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
     - name: Run tests and generate coverage report
