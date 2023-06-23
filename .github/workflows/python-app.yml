@@ -37,6 +37,7 @@ jobs:
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          $(cat test_output.txt) /n $(cat coverage_report.txt)
+          $(cat test_output.txt)
+          $(cat coverage_report.txt)
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
