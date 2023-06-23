@@ -37,4 +37,5 @@ jobs:
       with:
         channel-id: D04T65HAB16
         slack-message: $(cat test_output.txt) /n $(cat coverage_report.txt)
-        botToken : xoxe.xoxp-1-Mi0yLTIzMTE4NzMxNjQtNDg4NTk3MDk0NDYzMS01NDczNDQ5NjA4MzU1LTU0NTkwMzQ1MDY3MTEtMDAxOTI1ZGQzMGVmMjU4Nzg5MDUzODlmOTA0OTlhMmVlOTk0MmJiNzRlZjk5NTRhZDM3YTQyMGNkN2M1NzZlZg
+      env:
+        SLACK_BOT_TOKEN: ${{ xoxe.xoxp-1-Mi0yLTIzMTE4NzMxNjQtNDg4NTk3MDk0NDYzMS01NDczNDQ5NjA4MzU1LTU0NTkwMzQ1MDY3MTEtMDAxOTI1ZGQzMGVmMjU4Nzg5MDUzODlmOTA0OTlhMmVlOTk0MmJiNzRlZjk5NTRhZDM3YTQyMGNkN2M1NzZlZg }}
