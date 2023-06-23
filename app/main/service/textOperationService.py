@@ -18,7 +18,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                response = self.chatCompletion.create(**self.prompt.getSummarizeContentPromt(content))
+                response = self.chatCompletion.create(**self.prompt.getSummarizeContentPrompt(content))
                 result = response.choices[0].message.content
                 newQuery = Query("summarize_content", content, result)
                 self.queryDao.addQuery(newQuery)
@@ -37,7 +37,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                response = self.chatCompletion.create(**self.prompt.getFixTyposPromt(content))
+                response = self.chatCompletion.create(**self.prompt.getFixTyposPrompt(content))
                 result = response.choices[0].message.content
                 newQuery = Query("fix_typos", content, result)
                 self.queryDao.addQuery(newQuery)
@@ -48,7 +48,7 @@ class TextOperationService:
             return {"error": "Your request "+ str(tokenCount) +" tokens exceeds the max token count of " + str(self.maxToken) +  "."}, 400
     
     
-    def getExplainCode(self, content, languagePreference):
+    def getExplainCode(self, content, languagePreference = "English"):
         query = self.queryDao.getByRequest("explain_code", content)
         tokenCount = self.prompt.getTokenCount(content)
         if not content:
@@ -57,7 +57,7 @@ class TextOperationService:
             return {"result": query, "message": "Request exists in cache"},200
         elif(tokenCount <= self.maxToken):
             try:
-                response = self.chatCompletion.create(**self.prompt.getExplainCodePromt(content, languagePreference))
+                response = self.chatCompletion.create(**self.prompt.getExplainCodePrompt(content, languagePreference))
                 result = response.choices[0].message.content
                 newQuery = Query("explain_code", content, result)
                 self.queryDao.addQuery(newQuery)
