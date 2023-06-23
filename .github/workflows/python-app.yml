@@ -29,11 +29,11 @@ jobs:
     - name: Run tests
       id: run_test
       run: |
-        echo "test_report=$(pytest --cov)\n" >> $GITHUB_OUTPUT
+        pytest --cov
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: ${{join(steps.run_tests.outputs.*, '\n')}}
+        slack-message: ${{ steps.tests.outputs.stdout }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
