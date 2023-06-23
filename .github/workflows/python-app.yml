@@ -30,8 +30,7 @@ jobs:
       id: run_test
       run: |
         test_report = $((pytest --cov))
-        echo "::add-mask::$test_report"
-        echo "test-report=$test_report" >> "$GITHUB_OUTPUT"
+        echo "TEST_REPORT=$test_report" >> "$GITHUB_OUTPUT"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
