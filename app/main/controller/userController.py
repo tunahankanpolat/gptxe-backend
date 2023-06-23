@@ -1,10 +1,11 @@
 from flask_restx import Resource, Namespace
-from flask import request, current_app as app
+from flask import request
+from app.main.service.userService import UserService
 from app.main.utils.auth import token_required
-from app.main.utils.logger import addEmailForLogger
-from app.main.utils.dependencyInjection import DependencyInjection
+from app.main.controller import addEmailForLogger
 
 api = Namespace("api")
+userService = UserService()
 
 @api.route("/signUp")
 class signUpResource(Resource):
@@ -12,7 +13,7 @@ class signUpResource(Resource):
         json = request.get_json()
         email = json.get("email")
         password = json.get("password")
-        result = DependencyInjection().getUserService(app).signUp(email, password)
+        result = userService.signUp(email, password)
         return addEmailForLogger(result, email)        
 
 @api.route("/logIn")
@@ -21,20 +22,20 @@ class logInResource(Resource):
         json = request.get_json()
         email = json.get("email")
         password = json.get("password")
-        result = DependencyInjection().getUserService(app).logIn(email, password)
+        result = userService.logIn(email, password)
         return addEmailForLogger(result, email)
 @api.route("/upgradeSubscription")
 class upgradeSubscriptionResource(Resource):
     @token_required
     def post(self, *args, **kwargs):
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"subscription":True})
+        result = userService.updateUser(kwargs, {"subscription":True})
         email = kwargs.get("email")
         return addEmailForLogger(result, email)
 @api.route("/downgradeSubscription")
 class downgradeSubscriptionResource(Resource):
     @token_required
     def post(self, *args, **kwargs):
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"subscription":False})
+        result = userService.updateUser(kwargs, {"subscription":False})
         email = kwargs.get("email")
         return addEmailForLogger(result, email)
 
@@ -45,7 +46,7 @@ class updateEmailResource(Resource):
         email = kwargs.get("email")
         json = request.get_json()
         updatedEmail = json.get("email")
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"email":updatedEmail})
+        result = userService.updateUser(kwargs, {"email":updatedEmail})
         return addEmailForLogger(result, email) 
 @api.route("/updatePassword")
 class updatePasswordResource(Resource):
@@ -54,7 +55,7 @@ class updatePasswordResource(Resource):
         email = kwargs.get("email")
         json = request.get_json()
         password = json.get("password")
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"password":password})    
+        result = userService.updateUser(kwargs, {"password":password})    
         return addEmailForLogger(result, email)
 @api.route("/updateApiKey")
 class updateApiKeyResource(Resource):
@@ -63,7 +64,7 @@ class updateApiKeyResource(Resource):
         email = kwargs.get("email")
         json = request.get_json()
         apiKey = json.get("api_key")
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"api_key":apiKey})   
+        result = userService.updateUser(kwargs, {"api_key":apiKey})   
         return addEmailForLogger(result, email)
 @api.route("/updateLanguagePreference")
 class updateLanguagePreferenceResource(Resource):
@@ -72,5 +73,5 @@ class updateLanguagePreferenceResource(Resource):
         email = kwargs.get("email")
         json = request.get_json()
         languagePreference = json.get("language_preference")
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"language_preference":languagePreference})  
+        result = userService.updateUser(kwargs, {"language_preference":languagePreference})  
         return addEmailForLogger(result, email)

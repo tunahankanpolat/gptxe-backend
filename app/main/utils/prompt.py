@@ -1,39 +1,33 @@
 class Prompt:
-    def __init__(self, encoding):
-        self.encoding = encoding
-
-    def __summarizeContentPromptMessage(self, content):
+    def __summarizeContentPromtMessage(self, content):
         return [{"role": "system", "content": "You are a helpful assistant that summarizes the content in the language of the user's content in the shortest way without losing its meaning."},
                 {"role": "user", "content": content}]
 
-    def __explainCodePromptMessage(self, content, languagePreference):
+    def __explainCodePromtMessage(self, content, languagePreference):
         return [{"role": "system", "content": "You are a helpful assistant who briefly explains the code in " + str(languagePreference) + "."},
                 {"role": "user", "content": content}]
 
-    def __fixTyposPromptMessage(self, content):
+    def __fixTyposPromtMessage(self, content):
         return [{"role": "system", "content": "You are a helpful assistant that corrects typos."},
                 {"role": "user", "content": content}]
 
-    def getSummarizeContentPrompt(self, content):
+    def getSummarizeContentPromt(self, content):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__summarizeContentPromptMessage(content),
+            "messages": self.__summarizeContentPromtMessage(content),
             "temperature": 0
         }
 
-    def getExplainCodePrompt(self, content, languagePreference):
+    def getExplainCodePromt(self, content, languagePreference):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__explainCodePromptMessage(content, languagePreference),
+            "messages": self.__explainCodePromtMessage(content, languagePreference),
             "temperature": 0
         }
 
-    def getFixTyposPrompt(self, content):
+    def getFixTyposPromt(self, content):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__fixTyposPromptMessage(content),
+            "messages": self.__fixTyposPromtMessage(content),
             "temperature": 0
         }
-    
-    def getTokenCount(self, content):
-        return len(self.encoding.encode(content))
