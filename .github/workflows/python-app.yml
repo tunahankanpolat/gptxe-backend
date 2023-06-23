@@ -1,0 +1,40 @@
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9.16
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9.16"
+    - name: Install dependencies
+      run: |
+        pip install pytest-cov
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Set environment variable
+      run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
+    - name: Run tests
+      uses: mathiasvr/command-output@v2.0.0
+      id: run_test
+      with:
+        run: pytest --cov
+    - name: slack-send
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: D04T65HAB16
+        slack-message: ${{ steps.run_test.outputs.stdout }}
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
