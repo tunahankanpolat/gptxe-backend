@@ -36,6 +36,7 @@ jobs:
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: $(cat test_output.txt) /n $(cat coverage_report.txt)
+        slack-message: |
+          $(cat test_output.txt) /n $(cat coverage_report.txt)
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
