@@ -43,4 +43,4 @@ jobs:
         slack-message: sa
         file: test_report.txt
       env:
-        SLACK_BOT_TOKEN: ${{ ${{ steps.package.outputs.content }} }}
+        SLACK_BOT_TOKEN: ${{ ${{ steps.test_report.outputs.content }} }}
