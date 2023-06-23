@@ -35,6 +35,6 @@ jobs:
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: ${{ echo "::set-output name=report::$(cat test_report.txt)" }}
+        slack-message: ${{ ::get-output name=report}}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
