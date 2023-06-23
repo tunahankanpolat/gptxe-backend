@@ -29,12 +29,14 @@ jobs:
     - name: Run tests
       id: run_test
       run: |
-        test_report = $((pytest --cov))
-        echo "TEST_REPORT=$test_report" >> "$GITHUB_OUTPUT"
+
+        the_secret=$((pytest --cov))
+        echo "::add-mask::$the_secret"
+        echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: ${{ steps.run_test.outputs.test-report }}
+        slack-message: ${{ steps.run_tests.outputs.secret-number }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
