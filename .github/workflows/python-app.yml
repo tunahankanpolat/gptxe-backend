@@ -34,6 +34,6 @@ jobs:
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
-        slack-message: ${{ steps.tests.outputs.stdout }}
+        slack-message: ${{ steps.run_test.outputs.stdout }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
