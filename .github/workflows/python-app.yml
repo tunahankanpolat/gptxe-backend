@@ -27,9 +27,10 @@ jobs:
     - name: Set environment variable
       run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
     - name: Run tests
+      uses: mathiasvr/command-output@v2.0.0
       id: run_test
-      run: |
-        pytest --cov
+      with:
+        run: pytest --cov
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
