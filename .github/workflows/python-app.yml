@@ -34,6 +34,6 @@ jobs:
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          $(test_report)
+          $(cat test_report.txt)
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
