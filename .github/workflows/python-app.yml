@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -32,12 +31,18 @@ jobs:
         coverage run --source=. -m unittest discover > test_output.txt
         coverage report > coverage_report.txt
         coverage xml -o coverage.xml
+    - name: Read test output file
+      id: read_test_output
+      run: echo "::set-output name=contents::$(cat test_output.txt)"
+    - name: Read coverage report file
+      id: read_coverage_report
+      run: echo "::set-output name=contents::$(cat coverage_report.txt)"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          $(cat test_output.txt)
-          $(cat coverage_report.txt)
+          ${{ steps.read_test_output.outputs.contents }}
+          ${{ steps.read_coverage_report.outputs.contents }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
