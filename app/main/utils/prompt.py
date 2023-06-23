@@ -1,47 +1,39 @@
 class Prompt:
-    def setContent(self, content):
-        self.content = content
+    def __init__(self, encoding):
+        self.encoding = encoding
 
-    def __checkInformationPromtMessage(self):
-        return [{"role": "system", "content": "You are a information checker that checks whether the information is correct. Check the correctness of the information using the translated content into English. Return true if the information is correct, Return false and correct content if the information is incorrect."},
-                {"role": "user", "content": self.content}]
-
-    def __summarizeContentPromtMessage(self):
+    def __summarizeContentPromptMessage(self, content):
         return [{"role": "system", "content": "You are a helpful assistant that summarizes the content in the language of the user's content in the shortest way without losing its meaning."},
-                {"role": "user", "content": self.content}]
+                {"role": "user", "content": content}]
 
-    def __explainCodePromtMessage(self):
-        return [{"role": "system", "content": "You are a helpful assistant that explains the code in the shortest way."},
-                {"role": "user", "content": self.content}]
+    def __explainCodePromptMessage(self, content, languagePreference):
+        return [{"role": "system", "content": "You are a helpful assistant who briefly explains the code in " + str(languagePreference) + "."},
+                {"role": "user", "content": content}]
 
-    def __fixTyposPromtMessage(self):
+    def __fixTyposPromptMessage(self, content):
         return [{"role": "system", "content": "You are a helpful assistant that corrects typos."},
-                {"role": "user", "content": self.content}]
+                {"role": "user", "content": content}]
 
-    def __getCheckInformationPromt(self):
+    def getSummarizeContentPrompt(self, content):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__checkInformationPromtMessage(),
+            "messages": self.__summarizeContentPromptMessage(content),
             "temperature": 0
         }
 
-    def getSummarizeContentPromt(self):
+    def getExplainCodePrompt(self, content, languagePreference):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__summarizeContentPromtMessage(),
+            "messages": self.__explainCodePromptMessage(content, languagePreference),
             "temperature": 0
         }
 
-    def getExplainCodePromt(self):
+    def getFixTyposPrompt(self, content):
         return {
             "model": "gpt-3.5-turbo",
-            "messages": self.__explainCodePromtMessage(),
+            "messages": self.__fixTyposPromptMessage(content),
             "temperature": 0
         }
-
-    def getFixTyposPromt(self):
-        return {
-            "model": "gpt-3.5-turbo",
-            "messages": self.__fixTyposPromtMessage(),
-            "temperature": 0
-        }
+    
+    def getTokenCount(self, content):
+        return len(self.encoding.encode(content))

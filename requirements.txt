@@ -4,3 +4,5 @@ flask-restx
 python-dotenv
 flask_jwt_extended
 pymongo
+tiktoken
+redis

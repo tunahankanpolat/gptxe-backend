@@ -1,14 +1,16 @@
-from application import db
+class UserDao:
+    def __init__(self, databaseInstance):
+        self.databaseInstance = databaseInstance
 
-def getByEmail(email):
-    users = db.users
-    return users.find_one({"email": email})
+    def getByEmail(self, email):
+        users = self.databaseInstance.users
+        return users.find_one({"email": email})
 
-def addUser(user):
-    users = db.users
-    return users.insert_one(user.toString()).inserted_id
+    def addUser(self, user):
+        users = self.databaseInstance.users
+        return users.insert_one(user.toString()).inserted_id
 
-def updateUser(userId, user, updatedUserData):
-    users = db.users
-    user.update(updatedUserData)
-    users.replace_one({"_id": userId}, user)
+    def updateUser(self, userId, user, updatedUserData):
+        users = self.databaseInstance.users
+        user.update(updatedUserData)
+        users.replace_one({"_id": userId}, user)
