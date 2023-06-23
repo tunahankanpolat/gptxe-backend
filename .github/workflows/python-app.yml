@@ -27,13 +27,15 @@ jobs:
     - name: Set environment variable
       run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
     - name: Run tests
+      id: run_test
       run: |
         pytest --cov > test_report.txt
+        echo "::set-output name=report::$(cat test_report.txt)"
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
         channel-id: D04T65HAB16
         slack-message: |
-          $(cat test_report.txt)
+          ${{ steps.run_test.outputs.report }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
