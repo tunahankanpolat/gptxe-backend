@@ -1,0 +1,44 @@
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9.16
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9.16"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Set environment variable
+      run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
+
+    - name: Configure AWS Credentials For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        mask-aws-account-id: # ${{ secrets.AWS_ACCOUNT_ID }}
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build and tag Docker image
+      run: |
+        docker build -t gptxe-backend:latest .
+        docker tag gptxe-backend:latest 988414464535.dkr.ecr.eu-central-1.amazonaws.com/gptxe:latest
+
+    - name: Push Docker image to Amazon ECR
+      run: docker push 988414464535.dkr.ecr.eu-central-1.amazonaws.com/gptxe:latest
