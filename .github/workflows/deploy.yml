@@ -42,3 +42,4 @@ jobs:
 
     - name: Push Docker image to Amazon ECR
       run: docker push 988414464535.dkr.ecr.eu-central-1.amazonaws.com/gptxe:latest
+      
