@@ -2,7 +2,7 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test-#15-deploy-2" ]
 
 permissions:
   contents: read
