@@ -25,7 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Set environment variable
-      run: echo "CONFIGURATION_SETUP=config.DevelopmentConfig" >> $GITHUB_ENV
+      run: echo "CONFIGURATION_SETUP=config.ProductionConfig" >> $GITHUB_ENV
     - name: Run tests
       uses: mathiasvr/command-output@v2.0.0
       id: run_test
