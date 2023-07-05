@@ -31,6 +31,7 @@ check_and_update_image() {
 
 check_interval_seconds=3600 
 while true; do
+    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
     check_and_update_image
     sleep "$check_interval_seconds"
 done
