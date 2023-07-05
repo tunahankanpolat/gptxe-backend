@@ -2,9 +2,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
 
 permissions:
   contents: read
@@ -34,7 +34,7 @@ jobs:
     - name: slack-send
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        channel-id: D04T65HAB16
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         slack-message: ${{ steps.run_test.outputs.stdout }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
