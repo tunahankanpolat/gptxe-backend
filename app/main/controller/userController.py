@@ -4,7 +4,7 @@ from app.main.utils.auth import token_required
 from app.main.utils.logger import addEmailForLogger
 from app.main.utils.dependencyInjection import DependencyInjection
 
-api = Namespace("api")
+api = Namespace("api/user")
 
 @api.route("/signUp")
 class signUpResource(Resource):
@@ -23,52 +23,48 @@ class logInResource(Resource):
         password = json.get("password")
         result = DependencyInjection().getUserService(app).logIn(email, password)
         return addEmailForLogger(result, email)
-@api.route("/upgradeSubscription")
-class upgradeSubscriptionResource(Resource):
+    
+@api.route("/subscription")
+class updateSubscriptionResource(Resource):
     @token_required
-    def post(self, *args, **kwargs):
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"subscription":True})
-        email = kwargs.get("email")
-        return addEmailForLogger(result, email)
-@api.route("/downgradeSubscription")
-class downgradeSubscriptionResource(Resource):
-    @token_required
-    def post(self, *args, **kwargs):
-        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"subscription":False})
+    def put(self, *args, **kwargs):
+        json = request.get_json()
+        subscription = json.get("subscription")
+        result = DependencyInjection().getUserService(app).updateUser(kwargs, {"subscription":subscription})
         email = kwargs.get("email")
         return addEmailForLogger(result, email)
 
-@api.route("/updateEmail")
+@api.route("/email")
 class updateEmailResource(Resource):
     @token_required
-    def post(self, *args, **kwargs):       
+    def put(self, *args, **kwargs):       
         email = kwargs.get("email")
         json = request.get_json()
         updatedEmail = json.get("email")
         result = DependencyInjection().getUserService(app).updateUser(kwargs, {"email":updatedEmail})
         return addEmailForLogger(result, email) 
-@api.route("/updatePassword")
+@api.route("/password")
 class updatePasswordResource(Resource):
     @token_required
-    def post(self, *args, **kwargs):       
+    def put(self, *args, **kwargs):       
         email = kwargs.get("email")
         json = request.get_json()
         password = json.get("password")
         result = DependencyInjection().getUserService(app).updateUser(kwargs, {"password":password})    
         return addEmailForLogger(result, email)
-@api.route("/updateApiKey")
+@api.route("/apiKey")
 class updateApiKeyResource(Resource):
     @token_required
-    def post(self, *args, **kwargs):       
+    def put(self, *args, **kwargs):       
         email = kwargs.get("email")
         json = request.get_json()
         apiKey = json.get("api_key")
         result = DependencyInjection().getUserService(app).updateUser(kwargs, {"api_key":apiKey})   
         return addEmailForLogger(result, email)
-@api.route("/updateLanguagePreference")
+@api.route("/languagePreference")
 class updateLanguagePreferenceResource(Resource):
     @token_required
-    def post(self, *args, **kwargs):     
+    def put(self, *args, **kwargs):     
         email = kwargs.get("email")
         json = request.get_json()
         languagePreference = json.get("language_preference")
